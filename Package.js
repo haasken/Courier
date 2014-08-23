@@ -3,8 +3,8 @@ var Package = function(posX, posY) {
 	this.height = 20;
 
 	/* Turn the arbitrary positions into positions on the grid */
-	this.posX = grid.snapToGrid(posX) - this.width / 2;
-	this.posY = grid.snapToGrid(posY) - this.height / 2;
+	this.posX = grid.snapToGrid(posX - grid.posX) - this.width / 2 + grid.posX;
+	this.posY = grid.snapToGrid(posY - grid.posY) - this.height / 2 + grid.posY;
 
 	this.color = COLORS.blue;
 	this.removeThis = false;
