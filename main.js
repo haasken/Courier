@@ -21,12 +21,12 @@ var DIRECTIONS = {
 
 var canvas, context;
 /* Space between grid lines, defined here for convenience */
-var gridSpacing = 50
+var gridSpacing = 80;
 /* Width and height of the grid */
 var gridWidth, gridHeight;
 var grid;
 /* Margin between the grid and the edge of the level */
-var levelMargin = gridSpacing;
+var levelMargin = 20;
 /* Player bounds for convenience */
 var boundsLeft, boundsRight, boundsTop, boundsBottom;
 var courierWidth = 40;
@@ -46,8 +46,8 @@ function onLoad() {
 	levelWidth = canvas.width;
 	levelHeight = canvas.height;
 
-	gridWidth = levelWidth - gridSpacing * 2;
-	gridHeight = levelHeight - gridSpacing * 2;
+	gridWidth = levelWidth - levelMargin * 2;
+	gridHeight = levelHeight - levelMargin * 2;
 
 	grid = new Grid(levelMargin, levelMargin,
 				 	gridWidth, gridHeight, gridSpacing);
@@ -57,7 +57,8 @@ function onLoad() {
 	boundsTop = levelMargin - courierHeight / 2;
 	boundsBottom = levelHeight - levelMargin + courierHeight / 2;
 
-	courier = new Courier(gridSpacing - 20, gridSpacing - 20);
+	courier = new Courier(grid.snapToGrid(100) + grid.posX - courierWidth / 2, 
+						  grid.snapToGrid(100) + grid.posY - courierHeight / 2);
 
 	packages.push(getRandomPackage());
 
