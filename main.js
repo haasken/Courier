@@ -33,6 +33,10 @@ var courierWidth = 40;
 var courierHeight = 40;
 var courier;
 
+/* Time in seconds for package pickups to expire */
+var packageExpireSeconds = 10;
+var dropoffExpireSeconds = 10;
+
 var packages = new Array();
 var dropoffs = new Array();
 
@@ -87,6 +91,18 @@ function completeDropoffs() {
 	}
 }
 
+function updatePackages() {
+	for (var i = 0; i < packages.length; i++) {
+		packages[i].update();
+	}
+}
+
+function updateDropOffs() {
+	for (var i = 0; i < dropoffs.length; i++) {
+		dropoffs[i].update();
+	}
+}
+
 function rectanglesOverlap(rect1, rect2) {
 	// Two upright rectangles
 	var left1 = rect1.posX;
@@ -114,6 +130,8 @@ function rectanglesOverlap(rect1, rect2) {
 function update() {
 	courier.control();
 	courier.update();
+	updatePackages();
+	updateDropOffs();
 
 	collectPackages();
 	completeDropoffs();
