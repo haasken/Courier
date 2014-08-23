@@ -1,0 +1,16 @@
+This game is about picking up packages (or passengers) and delivering
+them to dropoff points on a city grid.  It fits the theme because the
+Courier is connecting worlds by delivering items/messages between the
+people in the city.
+
+Implemented so far:  ability to travel on a grid, accelerate,
+decelarate, and turn; ability to pickup packages (blue) and deliver
+them to the dropoff points (red).  There is no timing for the
+deliveries and no scoring system yet.  There is also no art or music.
+
+Ideas for extending the gameplay:
+- Timers and score more highly for faster deliveries.
+- Traffic, i.e., areas of the map where you travel slower
+- A braking key because the arrows aren't great for that.
+- Multiple package deliveries at once, drop off the correct package
+  at the correct dropoff location.
