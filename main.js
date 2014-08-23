@@ -127,6 +127,11 @@ function rectanglesOverlap(rect1, rect2) {
 	return false;
 }
 
+function drawBackground(context) {
+	context.clearRect(0, 0, levelWidth, levelHeight);
+	IMAGES.background.draw(context, 0, 0, 1);
+}
+
 /* Main game loop */
 function update() {
 	courier.control();
@@ -144,8 +149,7 @@ function update() {
 	}
 
 	// Drawing
-	context.fillStyle = "white";
-	context.fillRect( 0, 0, canvas.width, canvas.height );
+	drawBackground(context);
 
 	grid.draw(context);
 	courier.draw(context);
