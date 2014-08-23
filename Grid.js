@@ -12,9 +12,10 @@ var Grid = function(posX, posY, width, height, spacing) {
 }
 
 Grid.prototype.attemptTurnToVert = function(courier) {
-	var curXCoord = Math.floor((courier.centerX - this.posX) / this.spacing);
-	var distToRightVert = this.spacing - courier.centerX % this.spacing;
-	var distToLeftVert = courier.centerX % this.spacing;
+	var relPosX = courier.centerX - this.posX;
+	var curXCoord = Math.floor(relPosX / this.spacing);
+	var distToRightVert = this.spacing - relPosX % this.spacing;
+	var distToLeftVert = relPosX % this.spacing;
 
 	if (distToRightVert < this.snapDistance) {
 		courier.stop();
@@ -29,9 +30,10 @@ Grid.prototype.attemptTurnToVert = function(courier) {
 }
 
 Grid.prototype.attemptTurnToHoriz = function(courier) {
-	var curYCoord = Math.floor((courier.centerY - this.posY) / this.spacing);
-	var distToBottomHoriz = this.spacing - courier.centerY % this.spacing;
-	var distToTopHoriz = this.spacing % courier.centerY;
+	var relPosY = courier.centerY - this.posY;
+	var curYCoord = Math.floor(relPosY / this.spacing);
+	var distToBottomHoriz = this.spacing - relPosY % this.spacing;
+	var distToTopHoriz = relPosY % this.spacing;
 
 	if (distToBottomHoriz < this.snapDistance) {
 		courier.stop();
@@ -77,7 +79,7 @@ Grid.prototype.attemptTurn = function(courier) {
 	}
 }
 
-/* Snap a given x or y coordinate (in the grids coordinate system) 
+/* Snap a given x or y coordinate (in the grid's coordinate system) 
  * to the nearest grid line.  Note that the returned coordinate is
  * also in terms of the grid's coordinate system. */
 Grid.prototype.snapToGrid = function(pos) {
