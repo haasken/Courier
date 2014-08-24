@@ -106,7 +106,7 @@ var keyboard = {
 
 	anyKeyHit: function() {
 		for ( key in keyboard.KEY ) {
-			if ( state[KEY[key]] == KEYSTATE.HIT || state[keyboard.KEY[key]] == KEYBOARD.HELD ) {
+			if ( state[keyboard.KEY[key]] == KEYSTATE.HIT || state[keyboard.KEY[key]] == KEYSTATE.HELD ) {
 				return true;
 			}
 		}
