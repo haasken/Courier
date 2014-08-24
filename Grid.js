@@ -66,6 +66,9 @@ Grid.prototype.attemptTurnToHoriz = function(courier) {
  * also in terms of the grid's coordinate system. */
 Grid.prototype.snapToGrid = function(pos) {
 	var curCoord = Math.floor(pos / this.spacing);
+	if (curCoord < 0) {
+		curCoord = 0;
+	}
 	var distToPrevCoord = pos % this.spacing;
 	var distToNextCoord = this.spacing - pos % this.spacing;
 
