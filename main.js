@@ -32,6 +32,7 @@ var boundsLeft, boundsRight, boundsTop, boundsBottom;
 var courierWidth = 40;
 var courierHeight = 40;
 var courier;
+var controller = new Controller();
 
 /* Time in seconds for package pickups to expire */
 var packageExpireSeconds = 10;
