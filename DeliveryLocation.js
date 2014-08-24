@@ -57,7 +57,7 @@ DeliveryLocation.prototype.enterLocation = function() {
 	/* Create a random dropoff location if this was a pickup location. */
 	if (this.type == LOCATIONS.pickup) {
 		var dropoff = getRandomDeliveryLocation(LOCATIONS.dropoff);
-		dropoff.startTimer(dropoffExpireSeconds);
+		dropoff.startTimer(deliveryExpirationSeconds);
 
 		/* Calculate the distance from this delivery location for calculating timer */
 		//TODO
