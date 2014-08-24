@@ -58,8 +58,7 @@ function onLoad() {
 	boundsTop = levelMargin - courierHeight / 2;
 	boundsBottom = levelHeight - levelMargin + courierHeight / 2;
 
-	courier = new Courier(grid.snapToGrid(100) + grid.posX - courierWidth / 2, 
-						  grid.snapToGrid(100) + grid.posY - courierHeight / 2);
+	courier = new Courier(100, 100);
 
 	packages.push(getRandomPackage());
 

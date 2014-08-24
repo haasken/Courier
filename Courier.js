@@ -1,8 +1,4 @@
 var Courier = function(posX, posY) {
-
-	this.posX = posX;
-	this.posY = posY;
-
 	/* Start out facing to the right. */
 	this.direction = DIRECTIONS.right;
 
@@ -15,6 +11,9 @@ var Courier = function(posX, posY) {
 	this.images[DIRECTIONS.horizontal] = IMAGES.redCarLeft;
 	/* Set the current image and update the Courier width and height */
 	this.updateImage();
+
+	this.posX = grid.snapToGrid(posX - grid.posX) + grid.posX - this.width / 2;
+	this.posY = grid.snapToGrid(posY - grid.posY) + grid.posY - this.height / 2;
 
 	/* The current accelaration, assumed to be directed in this.direction */
 	this.acceleration = 0;
@@ -64,9 +63,11 @@ Courier.prototype.control = function() {
 			/* Check if near enough a horizontal line to turn. */
 			if (grid.nearGridLine(this.centerY - grid.posY)) {
 				/* Snap to the nearest horizontal line, and change direction. */
+				this.direction = controller.isTurningRight() ? DIRECTIONS.right : DIRECTIONS.left;
+				/* We just turned. Set the correct image for the facing direction. */
+				this.updateImage();
 				var linePosY = grid.snapToGrid(this.centerY - grid.posY) + grid.posY;
 				this.posY = linePosY - this.height / 2;
-				this.direction = controller.isTurningRight() ? DIRECTIONS.right : DIRECTIONS.left;
 			}
 		}
 	}
@@ -78,15 +79,14 @@ Courier.prototype.control = function() {
 			/* Check if near enough a vertical line to turn. */
 			if (grid.nearGridLine(this.centerX - grid.posX)) {
 				/* Snap to the nearest vertical line, and change direction. */
+				this.direction = controller.isTurningUp() ? DIRECTIONS.up : DIRECTIONS.down;
+				/* We just turned. Set the correct image for the facing direction. */
+				this.updateImage();
 				var linePosX = grid.snapToGrid(this.centerX - grid.posX) + grid.posX;
 				this.posX = linePosX - this.width / 2;
-				this.direction = controller.isTurningUp() ? DIRECTIONS.up : DIRECTIONS.down;
 			}
 		}
 	}
-
-	/* We may have just turned. Set the correct image for the facing direction. */
-	this.updateImage();
 }
 
 /* Set this.currentImage to the correct image according to this.direction.
