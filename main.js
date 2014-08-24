@@ -1,25 +1,6 @@
 var levelWidth;
 var levelHeight;
 
-var COLORS = {
-	red: "red",
-	blue: "blue",
-	green: "green",
-	purple: "purple",
-	black: "black",
-	none: "none"
-}
-
-var DIRECTIONS = {
-	up: 0,
-	down: 1,
-	left: 2,
-	right: 3,
-	vertical: 4,
-	horizontal: 5,
-	none: 6
-}
-
 var canvas, context;
 /* Space between grid lines, defined here for convenience */
 var gridSpacing = 80;
