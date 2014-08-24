@@ -35,7 +35,7 @@ var Courier = function(posX, posY) {
 
 	/* The maximum speed the courier may be traveling when it turns.
 	 * At speeds greater than this, the courier will not turn when requested. */
-	this.maxTurnSpeed = 5;
+	this.maxTurnSpeed = 12;
 }
 
 Courier.prototype.control = function() {
