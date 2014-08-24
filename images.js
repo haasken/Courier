@@ -19,5 +19,10 @@
  
 var IMAGES = {
 	//background: new RegularImage(backgroundRawImage)
-	background: new RegularImage("./images/background.png")
+	background: new RegularImage("./images/background.png"),
+
+	redCarUp: new RegularImage("./images/redCarUp.png"),
+	redCarDown: new RegularImage("./images/redCarDown.png"),
+	redCarLeft: new RegularImage("./images/redCarLeft.png"),
+	redCarRight: new RegularImage("./images/redCarRight.png")
 };
