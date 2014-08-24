@@ -14,7 +14,11 @@ var DIRECTIONS = {
 	down: 1,
 	left: 2,
 	right: 3,
-	none: 4
+	upLeft: 4,
+	upRight: 5,
+	downLeft: 6,
+	downRight: 7,
+	none: 8
 }
 
 /* This indicates whether a delivery object is a pickup or a dropoff location. */

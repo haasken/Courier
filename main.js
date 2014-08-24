@@ -57,14 +57,16 @@ function updateDropOffs() {
 }
 
 function drawBackground(context) {
-	context.clearRect(0, 0, canvasWidth, canvasHeight);
+	context.fillStyle = COLORS.blue;
+	context.fillRect(0, 0, canvasWidth, canvasHeight);
+	//context.clearRect(0, 0, canvasWidth, canvasHeight);
 	IMAGES.background.draw(context, 0, 0, 1);
 	scoreboard.draw(context);
 }
 
 /* Main menu loop */
 function menuLoop() {
-	context.clearRect(0, 0, canvasWidth, canvasHeight);
+	//context.clearRect(0, 0, canvasWidth, canvasHeight);
 	context.fillStyle = COLORS.black;
 	context.font = "40px Courier";
 	context.fillText("Main menu.", 100, 100);

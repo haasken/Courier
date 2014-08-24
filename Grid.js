@@ -21,6 +21,24 @@ Grid.prototype.nearGridLine = function(relPos) {
 	return (distToGridLine1 < this.snapDistance || distToGridLine2 < this.snapDistance);
 }
 
+/* The following functions take in a position (in the global coordinate system) and 
+ * determines if it is on the respective edge of the grid. */
+Grid.prototype.onTopEdge = function(absPosY) {
+	return absPosY - this.posY == 0;
+}
+
+Grid.prototype.onBottomEdge = function (absPosY) {
+	return absPosY - this.posY == this.height;
+}
+
+Grid.prototype.onLeftEdge = function(absPosX) {
+	return absPosX - this.posX == 0;
+}
+
+Grid.prototype.onRightEdge = function(absPosX) {
+	return absPosX - this.posX == this.width;
+}
+
 /* Deprecated.  Used only by Courier::controlOld().  This seems to tightly coupled
  * to the Courier code. */
 Grid.prototype.attemptTurnToVert = function(courier) {

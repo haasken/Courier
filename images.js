@@ -27,5 +27,8 @@ var IMAGES = {
 	redCarRight: new RegularImage("./images/redCarRight.png"),
 
 	pickupLocation: new AnimatedImage("./images/pickupLocation.png", 20, 20, 0, 0),
-	dropoffLocation: new AnimatedImage("./images/dropoffLocation.png", 20, 20, 0, 0)
+	dropoffLocation: new AnimatedImage("./images/dropoffLocation.png", 20, 20, 0, 0),
+
+	calloutUpRight: new RegularImage("./images/calloutUpRight.png"),
+	calloutDownLeft: new RegularImage("./images/calloutDownLeft.png")
 };

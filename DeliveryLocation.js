@@ -23,6 +23,17 @@ var DeliveryLocation = function(posX, posY, type) {
 
 	/* Start the timer right when this delivery location is spawned. */
 	this.timer = new Timer(deliveryExpirationSeconds);
+
+	/* Create a callout for the timer display */
+	var calloutDirection = DIRECTIONS.upRight;
+	var calloutOriginX = this.posX + this.width;
+	var calloutOriginY = this.posY;
+	if (grid.onTopEdge(this.posY + this.height / 2) || grid.onRightEdge(this.posX + this.width / 2)) {
+		calloutDirection = DIRECTIONS.downLeft;
+		calloutOriginX = this.posX;
+		calloutOriginY = this.posY + this.height;
+	}
+	this.callout = new Callout(calloutOriginX, calloutOriginY, calloutDirection, this.color);
 }
 
 DeliveryLocation.prototype.update = function() {
@@ -37,11 +48,16 @@ DeliveryLocation.prototype.update = function() {
 DeliveryLocation.prototype.draw = function(context) {
 	this.animationRunner.draw(context);
 
-	/* Draw the time remaining on the dropoff location. */
+	/* Set the callout's text to the seconds remaining. */
 	var secondsRemaining = Math.ceil(this.timer.getSecondsRemaining());
-	context.font="20px Georgia";
+	this.callout.text = secondsRemaining.toFixed(0);
+
+	this.callout.draw(context);
+
+
+/*	context.font="20px Georgia";
 	context.fillStyle = this.color;
-	context.fillText(secondsRemaining.toFixed(0), this.posX, this.posY);
+	context.fillText(secondsRemaining.toFixed(0), this.posX, this.posY);*/
 }
 
 /* Starts the timer for this delivery location. Once the timer is done, this
