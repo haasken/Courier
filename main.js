@@ -16,12 +16,11 @@ var courierHeight = 40;
 var courier;
 var controller = new Controller();
 
-/* Time in seconds for package pickups to expire */
-var packageExpireSeconds = 10;
-var dropoffExpireSeconds = 10;
+/* Time in seconds for deliveryLocations to expire */
+var deliveryExpirationSeconds = 10;
 
-var packages = new Array();
-var dropoffs = new Array();
+var pickupLocations = new Array();
+var dropoffLocations = new Array();
 
 function onLoad() {
 	canvas = document.getElementById( "canvas" );
@@ -42,47 +41,45 @@ function onLoad() {
 
 	courier = new Courier(100, 100);
 
-	packages.push(getRandomPackage());
-
 	setInterval( update, 60 );
 }
 
 var cullEntityList = function( entityList ) {
-	for ( e in entityList ) {
-		if ( entityList[e].removeThis ) entityList.splice( e, 1 );
+	for (e in entityList) {
+		if (entityList[e].removeThis) entityList.splice(e, 1);
 	}
 }
 
 function cull() {
-	cullEntityList(packages);
-	cullEntityList(dropoffs);
+	cullEntityList(pickupLocations);
+	cullEntityList(dropoffLocations);
 }
 
-function collectPackages() {
-	for (var i = 0; i < packages.length; i++) {
-		if (rectanglesOverlap(courier, packages[i])) {
-			packages[i].collect();
+function collectPickupLocations() {
+	for (var i = 0; i < pickupLocations.length; i++) {
+		if (rectanglesOverlap(courier, pickupLocations[i])) {
+			pickupLocations[i].enterLocation();
 		}
 	}
 }
 
-function completeDropoffs() {
-	for (var i = 0; i < dropoffs.length; i++) {
-		if (rectanglesOverlap(courier, dropoffs[i])) {
-			dropoffs[i].complete();
+function completeDropoffLocations() {
+	for (var i = 0; i < dropoffLocations.length; i++) {
+		if (rectanglesOverlap(courier, dropoffLocations[i])) {
+			dropoffLocations[i].enterLocation();
 		}
 	}
 }
 
 function updatePackages() {
-	for (var i = 0; i < packages.length; i++) {
-		packages[i].update();
+	for (var i = 0; i < pickupLocations.length; i++) {
+		pickupLocations[i].update();
 	}
 }
 
 function updateDropOffs() {
-	for (var i = 0; i < dropoffs.length; i++) {
-		dropoffs[i].update();
+	for (var i = 0; i < dropoffLocations.length; i++) {
+		dropoffLocations[i].update();
 	}
 }
 
@@ -121,13 +118,13 @@ function update() {
 	updatePackages();
 	updateDropOffs();
 
-	collectPackages();
-	completeDropoffs();
+	collectPickupLocations();
+	completeDropoffLocations();
 
 	cull();
 
-	if (packages.length == 0 && dropoffs.length == 0) {
-		packages.push(getRandomPackage());
+	if (pickupLocations.length == 0 && dropoffLocations.length == 0) {
+		pickupLocations.push(getRandomDeliveryLocation(LOCATIONS.pickup));
 	}
 
 	// Drawing
@@ -136,11 +133,11 @@ function update() {
 	grid.draw(context);
 	courier.draw(context);
 
-	for (var i = 0; i < packages.length; i++) {
-		packages[i].draw(context);
+	for (var i = 0; i < pickupLocations.length; i++) {
+		pickupLocations[i].draw(context);
 	}
-	for (var i = 0; i < dropoffs.length; i++) {
-		dropoffs[i].draw(context);
+	for (var i = 0; i < dropoffLocations.length; i++) {
+		dropoffLocations[i].draw(context);
 	}
 
 	keyboard.updateState();
