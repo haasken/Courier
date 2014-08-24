@@ -28,6 +28,7 @@ var DeliveryLocation = function(posX, posY, type) {
 DeliveryLocation.prototype.update = function() {
 	/* Remove thy self if no time remains. */
 	if (this.timer.isExpired()) {
+		scoreboard.resetMultiplier();
 		this.removeThis = true;
 	}
 	this.animationRunner.update(this.posX, this.posY);
@@ -66,7 +67,7 @@ DeliveryLocation.prototype.enterLocation = function() {
 		dropoffLocations.push(dropoff);
 	}
 	else if (this.type == LOCATIONS.dropoff) {
-		scoreboard.addScoreSeconds(this.timer.getSecondsRemaining());
+		scoreboard.scoreDelivery(this.timer.getSecondsRemaining());
 		console.log("Dropoff seconds remaining: ", this.timer.getSecondsRemaining());
 	}
 }
