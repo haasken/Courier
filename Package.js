@@ -1,16 +1,16 @@
 var Package = function(posX, posY) {
-	this.width = 20;
-	this.height = 20;
-
-	/* Turn the arbitrary positions into positions on the grid */
-	this.posX = grid.snapToGrid(posX - grid.posX) - this.width / 2 + grid.posX;
-	this.posY = grid.snapToGrid(posY - grid.posY) - this.height / 2 + grid.posY;
-
 	this.color = COLORS.green;
 	this.removeThis = false;
 
 	this.animationRunner = new AnimationRunner(this.posX, this.posY, 0, 0);
 	this.animationRunner.setLoopingAnim(ANIMS.pickupLocation);
+
+	this.width = ANIMS.pickupLocation.image.frameWidth;
+	this.height = ANIMS.pickupLocation.image.frameHeight;
+
+	/* Turn the arbitrary positions into positions on the grid */
+	this.posX = grid.snapToGrid(posX - grid.posX) - this.width / 2 + grid.posX;
+	this.posY = grid.snapToGrid(posY - grid.posY) - this.height / 2 + grid.posY;
 
 	/* Start the timer right when this package is spawned. */
 	this.timer = new Timer(packageExpireSeconds);
