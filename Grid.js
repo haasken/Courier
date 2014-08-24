@@ -7,7 +7,9 @@ var Grid = function(posX, posY, width, height, spacing) {
 	this.width = width;
 	this.height = height;
 
+	/* The space between grid lines. Equal horizontally and vertically. */
 	this.spacing = spacing;
+	/* If closer than snapDistance to a grid line, nearGridLine will return true. */
 	this.snapDistance = this.spacing / 5;
 }
 
@@ -19,6 +21,8 @@ Grid.prototype.nearGridLine = function(relPos) {
 	return (distToGridLine1 < this.snapDistance || distToGridLine2 < this.snapDistance);
 }
 
+/* Deprecated.  Used only by Courier::controlOld().  This seems to tightly coupled
+ * to the Courier code. */
 Grid.prototype.attemptTurnToVert = function(courier) {
 	var relPosX = courier.centerX - this.posX;
 	var curXCoord = Math.floor(relPosX / this.spacing);
@@ -37,6 +41,8 @@ Grid.prototype.attemptTurnToVert = function(courier) {
 	}
 }
 
+/* Deprecated.  Used only by Courier::controlOld().  This seems to tightly coupled
+ * to the Courier code. */
 Grid.prototype.attemptTurnToHoriz = function(courier) {
 	var relPosY = courier.centerY - this.posY;
 	var curYCoord = Math.floor(relPosY / this.spacing);
@@ -51,38 +57,6 @@ Grid.prototype.attemptTurnToHoriz = function(courier) {
 	else if (distToTopHoriz < this.snapDistance) {
 		courier.stop();
 		courier.posY = this.posY + curYCoord * this.spacing - courier.height/2;
-		courier.direction = DIRECTIONS.horizontal;
-	}
-}
-
-/* Takes in a courier and attempts to turn it, if it's close enough
- * to the next grid line. */
-Grid.prototype.attemptTurn = function(courier) {
-	var curXCoord = Math.floor((courier.centerX - this.posX) / this.spacing);
-	var nextXCoord = Math.floor((courier.centerX + courier.velX - this.posX) / this.spacing);
-	var distanceToVert = Math.min(this.spacing - (courier.centerX % this.spacing),
-								  courier.centerX % this.spacing);
-
-	var curYCoord = Math.floor((courier.centerY - this.posY) / this.spacing);
-	var nextYCoord = Math.floor((courier.centerY + courier.velY - this.posY) / this.spacing);
-	var distanceToHoriz = Math.min(this.spacing - (courier.centerY % this.spacing),
-								   courier.centerY % this.spacing);
-
-	/* If the current x coord is different from the next x coord, then the
-	 * courier is about to cross a grid line, so it should turn. */
-	if (curXCoord != nextXCoord) { //} || distanceToVert < this.snapDistance) {
-		// Stop the X velocity and snap to vertical line
-		courier.stop();
-		var desiredXCoord = Math.max(curXCoord, nextXCoord);
-		courier.posX = this.posX + desiredXCoord * this.spacing - courier.width/2;
-		courier.direction = DIRECTIONS.vertical;
-	}
-	/* Same for the current vs. next y coord */
-	if (curYCoord != nextYCoord) { //} || distanceToHoriz < this.snapDistance) {
-		// Stop the Y velocity and snap to horizontal line
-		courier.stop();
-		var desiredYCoord = Math.max(curYCoord, nextYCoord);
-		courier.posY = this.posY + desiredYCoord * this.spacing - courier.height/2;
 		courier.direction = DIRECTIONS.horizontal;
 	}
 }
@@ -103,6 +77,7 @@ Grid.prototype.snapToGrid = function(pos) {
 	}
 }
 
+/* Draw a grid of lines onto the canvas context. */
 Grid.prototype.draw = function(context) {
 	var numHorizLines = Math.floor(this.height / this.spacing);
 	var numVertLines = Math.floor(this.width / this.spacing);
