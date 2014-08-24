@@ -14,7 +14,7 @@ function onLoad() {
 
 	courier = new Courier(100, 100);
 
-	setInterval( update, 60 );
+	setInterval(mainLoop, 60);
 }
 
 var cullEntityList = function( entityList ) {
@@ -62,8 +62,22 @@ function drawBackground(context) {
 	scoreboard.draw(context);
 }
 
+/* Main menu loop */
+function menuLoop() {
+	context.clearRect(0, 0, canvasWidth, canvasHeight);
+	context.fillStyle = COLORS.black;
+	context.font = "40px Courier";
+	context.fillText("Main menu.", 100, 100);
+	context.fillText("Press any key to continue.", 100, 200);
+
+	if (keyboard.anyKeyHit()) {
+		currentLoop = LOOPS.game;
+	}
+	keyboard.updateState();
+}
+
 /* Main game loop */
-function update() {
+function gameLoop() {
 	courier.control();
 	courier.update();
 	updatePackages();
@@ -92,4 +106,15 @@ function update() {
 	}
 
 	keyboard.updateState();
+}
+
+function mainLoop() {
+	switch (currentLoop) {
+		case LOOPS.menu:
+			menuLoop();
+			break;
+		case LOOPS.game:
+			gameLoop();
+			break;
+	}
 }

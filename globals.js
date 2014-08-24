@@ -1,3 +1,7 @@
+/* Set the state of the game to the main menu to start. */
+var currentLoop = LOOPS.menu;
+var currentGameState = STATES.inProgress;
+
 var canvas, context;
 
 /* The canvas width and height to be set when the onLoad() callback is executed. */

@@ -22,3 +22,14 @@ var LOCATIONS = {
 	pickup: 0,
 	dropoff: 1
 }
+
+var LOOPS = {
+	menu: 0,
+	game: 1
+}
+
+var STATES = {
+	inProgress: 0,
+	won: 1,
+	lost: 2
+}
