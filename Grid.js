@@ -11,6 +11,14 @@ var Grid = function(posX, posY, width, height, spacing) {
 	this.snapDistance = this.spacing / 5;
 }
 
+/* Takes in a position (in the grid coordinate system) and determines if it
+ * is within this.snapDistance of the nearest grid line.  If so, return true. */
+Grid.prototype.nearGridLine = function(relPos) {
+	var distToGridLine1 = relPos % this.spacing;
+	var distToGridLine2 = this.spacing - distToGridLine1;
+	return (distToGridLine1 < this.snapDistance || distToGridLine2 < this.snapDistance);
+}
+
 Grid.prototype.attemptTurnToVert = function(courier) {
 	var relPosX = courier.centerX - this.posX;
 	var curXCoord = Math.floor(relPosX / this.spacing);
@@ -84,7 +92,7 @@ Grid.prototype.attemptTurn = function(courier) {
  * also in terms of the grid's coordinate system. */
 Grid.prototype.snapToGrid = function(pos) {
 	var curCoord = Math.floor(pos / this.spacing);
-	var distToPrevCoord = this.spacing % pos;
+	var distToPrevCoord = pos % this.spacing;
 	var distToNextCoord = this.spacing - pos % this.spacing;
 
 	if (distToPrevCoord <= distToNextCoord) {
