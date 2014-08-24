@@ -199,13 +199,19 @@ Courier.prototype.update = function() {
 	this.centerX = this.posX + this.width / 2;
 	this.centerY = this.posY + this.height / 2;
 
+	/* These are the bounds for the top left corner (i.e., posX and posY) */
+	boundsLeft = levelMargin - this.width / 2;
+	boundsRight = canvasWidth - levelMargin - this.width / 2;
+	boundsTop = levelMargin - this.height / 2;
+	boundsBottom = canvasHeight - scoreboardHeight - this.height / 2;
+
 	/* Make sure we are still in the bounds of the level */
 	if (this.posX < boundsLeft) {
 		this.posX = boundsLeft;
 		this.stop();
 	}
-	else if (this.posX + this.width > boundsRight) {
-		this.posX = boundsRight - this.width;
+	else if (this.posX > boundsRight) {
+		this.posX = boundsRight;
 		this.stop();
 	}
 
@@ -213,8 +219,8 @@ Courier.prototype.update = function() {
 		this.posY = boundsTop;
 		this.stop();
 	}
-	else if (this.posY + this.height > boundsBottom) {
-		this.posY = boundsBottom - this.height;
+	else if (this.posY > boundsBottom) {
+		this.posY = boundsBottom;
 		this.stop();
 	}
 }
