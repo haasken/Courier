@@ -37,7 +37,7 @@ DeliveryLocation.prototype.draw = function(context) {
 	this.animationRunner.draw(context);
 
 	/* Draw the time remaining on the dropoff location. */
-	var secondsRemaining = this.timer.getSecondsRemaining();
+	var secondsRemaining = Math.ceil(this.timer.getSecondsRemaining());
 	context.font="20px Georgia";
 	context.fillStyle = this.color;
 	context.fillText(secondsRemaining.toFixed(0), this.posX, this.posY);
@@ -50,7 +50,8 @@ DeliveryLocation.prototype.startTimer = function(timerSeconds) {
 }
 
 /* Called when the courier enters the delivery location. This marks the delivery location
- * for removal.  If this is a pickupLocation, it also spawns a dropoff location. */
+ * for removal.  If this is a pickup location, it also spawns a dropoff location.  If this
+ * is a dropoff location, then it adds to the score. */
 DeliveryLocation.prototype.enterLocation = function() {
 	this.removeThis = true;
 
@@ -63,6 +64,10 @@ DeliveryLocation.prototype.enterLocation = function() {
 		//TODO
 
 		dropoffLocations.push(dropoff);
+	}
+	else if (this.type == LOCATIONS.dropoff) {
+		scoreboard.addScoreSeconds(this.timer.getSecondsRemaining());
+		console.log("Dropoff seconds remaining: ", this.timer.getSecondsRemaining());
 	}
 }
 

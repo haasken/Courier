@@ -1,5 +1,5 @@
-var levelWidth;
-var levelHeight;
+var canvasWidth;
+var canvasHeight;
 
 var canvas, context;
 /* Space between grid lines, defined here for convenience */
@@ -7,7 +7,7 @@ var gridSpacing = 80;
 /* Width and height of the grid */
 var gridWidth, gridHeight;
 var grid;
-/* Margin between the grid and the edge of the level */
+/* Margin between the grid and the left and upper edges of the level */
 var levelMargin = 20;
 /* Player bounds for convenience */
 var boundsLeft, boundsRight, boundsTop, boundsBottom;
@@ -15,6 +15,8 @@ var courierWidth = 40;
 var courierHeight = 40;
 var courier;
 var controller = new Controller();
+var scoreboardHeight = 60;
+var scoreboard;
 
 /* Time in seconds for deliveryLocations to expire */
 var deliveryExpirationSeconds = 10;
@@ -25,19 +27,21 @@ var dropoffLocations = new Array();
 function onLoad() {
 	canvas = document.getElementById( "canvas" );
 	context = canvas.getContext( "2d" );
-	levelWidth = canvas.width;
-	levelHeight = canvas.height;
+	canvasWidth = canvas.width;
+	canvasHeight = canvas.height;
 
-	gridWidth = levelWidth - levelMargin * 2;
-	gridHeight = levelHeight - levelMargin * 2;
+	gridWidth = canvasWidth - levelMargin * 2;
+	gridHeight = canvasHeight - levelMargin - scoreboardHeight;
 
 	grid = new Grid(levelMargin, levelMargin,
 				 	gridWidth, gridHeight, gridSpacing);
 
 	boundsLeft = levelMargin - courierWidth / 2;
-	boundsRight = levelWidth - levelMargin + courierWidth / 2;
+	boundsRight = canvasWidth - levelMargin + courierWidth / 2;
 	boundsTop = levelMargin - courierHeight / 2;
-	boundsBottom = levelHeight - levelMargin + courierHeight / 2;
+	boundsBottom = canvasHeight - scoreboardHeight + courierHeight / 2;
+
+	scoreboard = new Scoreboard(0, canvasHeight - scoreboardHeight, canvasWidth, scoreboardHeight);
 
 	courier = new Courier(100, 100);
 
@@ -107,8 +111,9 @@ function rectanglesOverlap(rect1, rect2) {
 }
 
 function drawBackground(context) {
-	context.clearRect(0, 0, levelWidth, levelHeight);
+	context.clearRect(0, 0, canvasWidth, canvasHeight);
 	IMAGES.background.draw(context, 0, 0, 1);
+	scoreboard.draw(context);
 }
 
 /* Main game loop */
