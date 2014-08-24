@@ -6,7 +6,10 @@ var Dropoff = function(posX, posY) {
 	this.posX = grid.snapToGrid(posX - grid.posX) - this.width / 2 + grid.posX;
 	this.posY = grid.snapToGrid(posY - grid.posY) - this.height / 2 + grid.posY;
 
-	this.color = COLORS.red;
+	this.animationRunner = new AnimationRunner(this.posX, this.posY, 0, 0);
+	this.animationRunner.setLoopingAnim(ANIMS.dropoffLocation);
+
+	this.colors = COLORS.blue;
 
 	/* The timer until this dropoff expires */
 	this.timer = null;
@@ -30,14 +33,15 @@ Dropoff.prototype.update = function() {
 	if (this.timer.isExpired()) {
 		this.removeThis = true;
 	}
+	this.animationRunner.update(this.posX, this.posY);
 }
 
 Dropoff.prototype.draw = function(context) {
-	context.fillStyle = this.color;
-	context.fillRect(this.posX, this.posY, this.width, this.height);
+	this.animationRunner.draw(context);
 
 	/* Draw the time remaining on the dropoff location. */
 	var secondsRemaining = this.timer.getSecondsRemaining();
+	context.fillStyle = this.color;
 	context.font="14px Georgia";
 	context.fillText(secondsRemaining.toFixed(0), this.posX, this.posY);
 }

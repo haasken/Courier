@@ -1,2 +1,4 @@
 # Ignore my Paint.NET files.  Only track the .pngs
 *.pdn
+# Ignore my asesprite files.  Only track the .pngs
+*.ase

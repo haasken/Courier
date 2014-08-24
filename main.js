@@ -4,6 +4,7 @@ var levelHeight;
 var COLORS = {
 	red: "red",
 	blue: "blue",
+	green: "green",
 	purple: "purple",
 	black: "black",
 	none: "none"

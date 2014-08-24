@@ -24,5 +24,8 @@ var IMAGES = {
 	redCarUp: new RegularImage("./images/redCarUp.png"),
 	redCarDown: new RegularImage("./images/redCarDown.png"),
 	redCarLeft: new RegularImage("./images/redCarLeft.png"),
-	redCarRight: new RegularImage("./images/redCarRight.png")
+	redCarRight: new RegularImage("./images/redCarRight.png"),
+
+	pickupLocation: new AnimatedImage("./images/pickupLocation.png", 20, 20, 0, 0),
+	dropoffLocation: new AnimatedImage("./images/dropoffLocation.png", 20, 20, 0, 0)
 };

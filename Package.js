@@ -6,8 +6,11 @@ var Package = function(posX, posY) {
 	this.posX = grid.snapToGrid(posX - grid.posX) - this.width / 2 + grid.posX;
 	this.posY = grid.snapToGrid(posY - grid.posY) - this.height / 2 + grid.posY;
 
-	this.color = COLORS.blue;
+	this.color = COLORS.green;
 	this.removeThis = false;
+
+	this.animationRunner = new AnimationRunner(this.posX, this.posY, 0, 0);
+	this.animationRunner.setLoopingAnim(ANIMS.pickupLocation);
 
 	/* Start the timer right when this package is spawned. */
 	this.timer = new Timer(packageExpireSeconds);
@@ -18,15 +21,16 @@ Package.prototype.update = function() {
 	if (this.timer.isExpired()) {
 		this.removeThis = true;
 	}
+	this.animationRunner.update(this.posX, this.posY);
 }
 
 Package.prototype.draw = function(context) {
-	context.fillStyle = this.color;
-	context.fillRect(this.posX, this.posY, this.width, this.height);
+	this.animationRunner.draw(context);
 
 	/* Draw the time remaining on the dropoff location. */
 	var secondsRemaining = this.timer.getSecondsRemaining();
 	context.font="14px Georgia";
+	context.fillStyle = this.color;
 	context.fillText(secondsRemaining.toFixed(0), this.posX, this.posY);
 }
 
