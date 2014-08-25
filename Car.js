@@ -81,6 +81,7 @@ Car.prototype.turnToVert = function() {
 
 Car.prototype.crash = function() {
 	console.log("You crashed!  Game over!");
+	SOUNDS.crash.play();
 	currentGameState = STATES.lost;
 }
 

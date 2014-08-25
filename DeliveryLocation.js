@@ -39,6 +39,7 @@ var DeliveryLocation = function(posX, posY, type) {
 DeliveryLocation.prototype.update = function() {
 	/* Remove thy self if no time remains. */
 	if (this.timer.isExpired()) {
+		SOUNDS.miss.play();
 		scoreboard.resetMultiplier();
 		this.removeThis = true;
 	}
@@ -74,6 +75,7 @@ DeliveryLocation.prototype.enterLocation = function() {
 
 	/* Create a random dropoff location if this was a pickup location. */
 	if (this.type == LOCATIONS.pickup) {
+		SOUNDS.pickup.play();
 		var dropoff = getRandomDeliveryLocation(LOCATIONS.dropoff);
 		dropoff.startTimer(deliveryExpirationSeconds);
 
@@ -83,6 +85,7 @@ DeliveryLocation.prototype.enterLocation = function() {
 		dropoffLocations.push(dropoff);
 	}
 	else if (this.type == LOCATIONS.dropoff) {
+		SOUNDS.dropoff.play();
 		scoreboard.scoreDelivery(this.timer.getSecondsRemaining());
 		totalDropoffs += 1;
 		console.log("Dropoff seconds remaining: ", this.timer.getSecondsRemaining());
