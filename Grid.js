@@ -39,6 +39,16 @@ Grid.prototype.onRightEdge = function(absPosX) {
 	return absPosX - this.posX == this.width;
 }
 
+Grid.prototype.nearHorizEdge = function(absPosY) {
+	var linePosY = this.snapToGrid(absPosY - this.posY) + this.posY;
+	return this.onTopEdge(linePosY) || this.onBottomEdge(linePosY);
+}
+
+Grid.prototype.nearVertEdge = function(absPosY) {
+	var linePosX = this.snapToGrid(absPosY - this.posY) + this.posY;
+	return this.onLeftEdge(linePosX) || this.onRightEdge(linePosX);
+}
+
 /* Deprecated.  Used only by Courier::controlOld().  This seems to tightly coupled
  * to the Courier code. */
 Grid.prototype.attemptTurnToVert = function(courier) {

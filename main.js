@@ -10,10 +10,6 @@ function onLoad() {
 	grid = new Grid(levelMargin, levelMargin,
 				 	gridWidth, gridHeight, gridSpacing);
 
-	scoreboard = new Scoreboard(0, canvasHeight - scoreboardHeight, canvasWidth, scoreboardHeight);
-
-	courier = new Courier(100, 100);
-
 	setInterval(mainLoop, 60);
 }
 
@@ -44,6 +40,14 @@ function completeDropoffLocations() {
 	}
 }
 
+function collideCars() {
+	for (var i = 0; i < otherCars.length; i++) {
+		if (rectanglesOverlap(courier, otherCars[i])) {
+			otherCars[i].crash();
+		}
+	}
+}
+
 function updatePackages() {
 	for (var i = 0; i < pickupLocations.length; i++) {
 		pickupLocations[i].update();
@@ -56,12 +60,34 @@ function updateDropOffs() {
 	}
 }
 
+function updateOtherCars() {
+	for (var i = 0; i < otherCars.length; i++) {
+		otherCars[i].update();
+	}
+}
+
 function drawBackground(context) {
 	context.fillStyle = COLORS.blue;
 	context.fillRect(0, 0, canvasWidth, canvasHeight);
 	//context.clearRect(0, 0, canvasWidth, canvasHeight);
 	IMAGES.background.draw(context, 0, 0, 1);
 	scoreboard.draw(context);
+}
+
+function initializeGame() {
+	otherCars = new Array();
+	pickupLocations = new Array();
+	dropoffLocations = new Array();
+
+	scoreboard = new Scoreboard(0, canvasHeight - scoreboardHeight, canvasWidth, scoreboardHeight);
+
+	courier = new Courier(100, 100);
+
+	for (var i = 0; i < 3; i++) {
+		otherCars.push(getRandomCar());
+	}
+
+	currentGameState = STATES.inProgress;
 }
 
 /* Main menu loop */
@@ -74,37 +100,64 @@ function menuLoop() {
 
 	if (keyboard.anyKeyHit()) {
 		currentLoop = LOOPS.game;
+		initializeGame();
 	}
 	keyboard.updateState();
 }
 
 /* Main game loop */
 function gameLoop() {
-	courier.control();
-	courier.update();
-	updatePackages();
-	updateDropOffs();
 
-	collectPickupLocations();
-	completeDropoffLocations();
+	switch(currentGameState) {
+		case STATES.lost:
+			context.clearRect(0, 0, canvasWidth, canvasHeight);
+			context.fillStyle = COLORS.black;
+			context.font = "40px Courier";
+			context.fillText("Main menu.", 100, 100);
+			context.fillText("Press any key to continue.", 100, 200);
 
-	cull();
+			if (keyboard.anyKeyHit())
+				currentLoop = LOOPS.menu
+			break;
+		case STATES.inProgress:
+			courier.control();
+			courier.update();
+			updatePackages();
+			updateDropOffs();
+			updateOtherCars();
 
-	if (pickupLocations.length == 0 && dropoffLocations.length == 0) {
-		pickupLocations.push(getRandomDeliveryLocation(LOCATIONS.pickup));
-	}
+			collectPickupLocations();
+			completeDropoffLocations();
+			collideCars();
 
-	// Drawing
-	drawBackground(context);
+			cull();
 
-	if (drawGrid) grid.draw(context);
-	courier.draw(context);
+			if (pickupLocations.length == 0 && dropoffLocations.length == 0) {
+				pickupLocations.push(getRandomDeliveryLocation(LOCATIONS.pickup));
+			}
 
-	for (var i = 0; i < pickupLocations.length; i++) {
-		pickupLocations[i].draw(context);
-	}
-	for (var i = 0; i < dropoffLocations.length; i++) {
-		dropoffLocations[i].draw(context);
+			if (totalDropoffs % addCarInterval == 0 && ! carAdded) {
+				carAdded = true;
+				otherCars.push(getRandomCar());
+			}
+
+			// Drawing
+			drawBackground(context);
+
+			if (drawGrid) grid.draw(context);
+
+			for (var i = 0; i < pickupLocations.length; i++) {
+				pickupLocations[i].draw(context);
+			}
+			for (var i = 0; i < dropoffLocations.length; i++) {
+				dropoffLocations[i].draw(context);
+			}	
+			for (var i = 0; i < otherCars.length; i++) {
+				otherCars[i].draw(context);
+			}
+
+			courier.draw(context);
+			break;
 	}
 
 	keyboard.updateState();

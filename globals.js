@@ -31,5 +31,14 @@ var controller = new Controller();
 var pickupLocations = new Array();
 var dropoffLocations = new Array();
 
+/* The number of packages successfully dropped off in total */
+var totalDropoffs = 0;
+/* The number of dropoffs after which a new blue car will be spawned. */
+var addCarInterval = 8;
+var carAdded = true;
+
+/* Other cars that you don't want to run into. */
+var otherCars = new Array();
+
 /* Time in seconds for deliveryLocations to expire */
 var deliveryExpirationSeconds = 10;

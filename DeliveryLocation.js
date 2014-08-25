@@ -84,6 +84,7 @@ DeliveryLocation.prototype.enterLocation = function() {
 	}
 	else if (this.type == LOCATIONS.dropoff) {
 		scoreboard.scoreDelivery(this.timer.getSecondsRemaining());
+		totalDropoffs += 1;
 		console.log("Dropoff seconds remaining: ", this.timer.getSecondsRemaining());
 	}
 }
