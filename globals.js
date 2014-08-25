@@ -1,6 +1,15 @@
+/* How often the update loop is executed, in milliseconds/loop. */
+var updateInterval = 60;
+
 /* Set the state of the game to the main menu to start. */
 var currentLoop = LOOPS.menu;
 var currentGameState = STATES.inProgress;
+
+/* How long to wait after a crash to show the game over screen, in seconds. */
+var restartWaitSeconds = 2;
+/* loops = seconds * (1000ms / second) * (loops / ms) */
+var restartWaitLoops = restartWaitSeconds * 1000 / updateInterval;
+var loopsWaited = 0;
 
 var canvas, context;
 

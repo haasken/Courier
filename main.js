@@ -10,7 +10,7 @@ function onLoad() {
 	grid = new Grid(levelMargin, levelMargin,
 				 	gridWidth, gridHeight, gridSpacing);
 
-	setInterval(mainLoop, 60);
+	setInterval(mainLoop, updateInterval);
 }
 
 var cullEntityList = function( entityList ) {
@@ -92,10 +92,24 @@ function initializeGame() {
 
 /* Main menu loop */
 function menuLoop() {
-	//context.clearRect(0, 0, canvasWidth, canvasHeight);
+	context.clearRect(0, 0, canvasWidth, canvasHeight);
 	context.fillStyle = COLORS.black;
 	context.font = "40px Courier";
 	context.fillText("Main menu.", 100, 100);
+	context.fillText("Press any key to continue.", 100, 200);
+
+	if (keyboard.anyKeyHit()) {
+		currentLoop = LOOPS.game;
+		initializeGame();
+	}
+	keyboard.updateState();
+}
+
+function gameOverLoop() {
+	context.clearRect(0, 0, canvasWidth, canvasHeight);
+	context.fillStyle = COLORS.black;
+	context.font = "40px Courier";
+	context.fillText("Game Over.", 100, 100);
 	context.fillText("Press any key to continue.", 100, 200);
 
 	if (keyboard.anyKeyHit()) {
@@ -110,14 +124,16 @@ function gameLoop() {
 
 	switch(currentGameState) {
 		case STATES.lost:
-			context.clearRect(0, 0, canvasWidth, canvasHeight);
 			context.fillStyle = COLORS.black;
 			context.font = "40px Courier";
-			context.fillText("Main menu.", 100, 100);
-			context.fillText("Press any key to continue.", 100, 200);
+			context.fillText("You crashed!", 100, 100);
 
-			if (keyboard.anyKeyHit())
-				currentLoop = LOOPS.menu
+			loopsWaited++;
+			
+			if (loopsWaited >= restartWaitLoops) {
+				loopsWaited = 0;
+				currentLoop = LOOPS.gameOver;
+			}
 			break;
 		case STATES.inProgress:
 			courier.control();
@@ -170,6 +186,9 @@ function mainLoop() {
 			break;
 		case LOOPS.game:
 			gameLoop();
+			break;
+		case LOOPS.gameOver:
+			gameOverLoop();
 			break;
 	}
 }

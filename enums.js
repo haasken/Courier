@@ -62,7 +62,8 @@ var LOCATIONS = {
 
 var LOOPS = {
 	menu: 0,
-	game: 1
+	game: 1,
+	gameOver: 2
 }
 
 var STATES = {
