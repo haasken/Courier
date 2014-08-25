@@ -2,11 +2,24 @@ var Controller = function() {
 	this.accelerationKey = keyboard.KEY.J;
 	this.brakeKey = keyboard.KEY.K;
 
+	/* directionKeys is an array of arrays which map from DIRECTIONS to keyboard.KEYS */
 	this.directionKeys = new Array();
-	this.directionKeys[DIRECTIONS.up] = keyboard.KEY.UP;
-	this.directionKeys[DIRECTIONS.down] = keyboard.KEY.DOWN;
-	this.directionKeys[DIRECTIONS.left] = keyboard.KEY.LEFT;
-	this.directionKeys[DIRECTIONS.right] = keyboard.KEY.RIGHT;
+
+	var wasdDirs = new Array();
+	wasdDirs[DIRECTIONS.up] = keyboard.KEY.W;
+	wasdDirs[DIRECTIONS.down] = keyboard.KEY.S;
+	wasdDirs[DIRECTIONS.left] = keyboard.KEY.A;
+	wasdDirs[DIRECTIONS.right] = keyboard.KEY.D;
+
+	var arrowDirs = new Array();
+	arrowDirs[DIRECTIONS.up] = keyboard.KEY.UP;
+	arrowDirs[DIRECTIONS.down] = keyboard.KEY.DOWN;
+	arrowDirs[DIRECTIONS.left] = keyboard.KEY.LEFT;
+	arrowDirs[DIRECTIONS.right] = keyboard.KEY.RIGHT;
+
+	this.directionKeys[0] = (wasdDirs);
+	this.directionKeys[1] = (arrowDirs);
+
 	this.upKey = keyboard.KEY.W;
 	this.downKey = keyboard.KEY.S;
 	this.leftKey = keyboard.KEY.A;
@@ -18,8 +31,13 @@ var Controller = function() {
 
 Controller.prototype.isAccelerating = function() {
 
-	var retVal = keyboard.keyHeld(this.directionKeys[this.direction]) &&
-				 ! keyboard.keyHeld(this.directionKeys[getOppositeDirection(this.direction)]);
+	var retVal = false;
+	for (var i = 0; i < this.directionKeys.length; i++) {
+		var dirMap = this.directionKeys[i];
+		retVal = retVal || 
+				 (keyboard.keyHeld(dirMap[this.direction]) &&
+				  ! keyboard.keyHeld(dirMap[getOppositeDirection(this.direction)]));
+	}
 
 	/*var retVal = keyboard.keyHeld(this.accelerationKey) && ! keyboard.keyHeld(this.brakeKey);*/
 	if (retVal && this.logging && console)
@@ -28,8 +46,13 @@ Controller.prototype.isAccelerating = function() {
 }
 
 Controller.prototype.isBraking = function() {
-	var retVal = keyboard.keyHeld(this.directionKeys[getOppositeDirection(this.direction)]) &&
-				 ! keyboard.keyHeld(this.directionKeys[this.direction]);
+	var retVal = false;
+	for (var i = 0; i < this.directionKeys.length; i++) {
+		var dirMap = this.directionKeys[i];
+		retVal = retVal ||
+				 (keyboard.keyHeld(dirMap[getOppositeDirection(this.direction)]) &&
+				  ! keyboard.keyHeld(dirMap[this.direction]));
+	}
 	/*var retVal = keyboard.keyHeld(this.brakeKey) && ! keyboard.keyHeld(this.accelerationKey);*/
 	if (retVal && this.logging && console)
 		console.log("Controller::isBraking() returns true.")
@@ -37,8 +60,13 @@ Controller.prototype.isBraking = function() {
 }
 
 Controller.prototype.isTurning = function(direction) {
-	var retVal = keyboard.keyHeld(this.directionKeys[direction]) && 
-				 ! keyboard.keyHeld(this.directionKeys[getOppositeDirection(this.direction)]);
+	var retVal = false;
+	for (var i = 0; i < this.directionKeys.length; i++) {
+		var dirMap = this.directionKeys[i];
+		retVal = retVal || 
+				 (keyboard.keyHeld(dirMap[direction]) && 
+				  ! keyboard.keyHeld(dirMap[getOppositeDirection(this.direction)]));
+	}
 	if (retVal && this.logging && console)
 		console.log("Controller::isTurning() returns true for direction ", direction)
 	return retVal;
