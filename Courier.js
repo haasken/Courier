@@ -103,6 +103,25 @@ Courier.prototype.updateImage = function() {
 	this.centerY = this.posY + this.height / 2;
 }
 
+/* Estimate the travel time (plus a little extra) to reach the given location.
+ * This takes into account the direction that the courier is currently facing. 
+ * Returns an estimated travel time in seconds. */
+Courier.prototype.estimateTravelTime = function(posX, posY) {
+	var distance = Math.abs(this.posX - posX) + Math.abs(this.posY - posY);
+	if (distance < grid.spacing * 3) distance = grid.spacing * 3;
+	/* seconds = pixelDistance / (pixelDistance / updateInterval) * updateInterval * (1 s / 1000 ms) */
+	var minimumTime = distance / this.maxSpeed * updateInterval / 1000;
+	/* The directions to reach the target */
+
+	var dirX = this.posX - posX > 0 ? DIRECTIONS.left : DIRECTIONS.right;
+	var dirY = this.posY - posY > 0 ? DIRECTIONS.up : DIRECTIONS.down;
+	/* Multiplier to account for changing direction. */
+	var multiplier = 2;
+	if (this.direction != dirX && this.direction != dirY)
+		multiplier = 3;
+	return minimumTime * multiplier;
+}
+
 /* Old control function, deprecated.  Use Courier.control().
  * This function depends on acc{X,Y} and vel{X,Y} being maintained. It allows the player
  * to control the courier using the arrow keys. */

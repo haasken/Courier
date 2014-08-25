@@ -77,10 +77,9 @@ DeliveryLocation.prototype.enterLocation = function() {
 	if (this.type == LOCATIONS.pickup) {
 		SOUNDS.pickup.play();
 		var dropoff = getRandomDeliveryLocation(LOCATIONS.dropoff);
-		dropoff.startTimer(deliveryExpirationSeconds);
 
-		/* Calculate the distance from this delivery location for calculating timer */
-		//TODO
+		/* Start the timer based on the courier's estimated travel time. */		
+		dropoff.startTimer(courier.estimateTravelTime(dropoff.posX, dropoff.posY));
 
 		dropoffLocations.push(dropoff);
 	}
