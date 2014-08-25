@@ -21,6 +21,39 @@ var DIRECTIONS = {
 	none: 8
 }
 
+function getOppositeDirection(direction) {
+	switch (direction) {
+		case DIRECTIONS.up:
+			return DIRECTIONS.down;
+			break;
+		case DIRECTIONS.down:
+			return DIRECTIONS.up;
+			break;
+		case DIRECTIONS.left:
+			return DIRECTIONS.right;
+			break;
+		case DIRECTIONS.right:
+			return DIRECTIONS.left;
+			break;
+		case DIRECTIONS.upLeft:
+			return DIRECTIONS.downRight;
+			break;
+		case DIRECTIONS.upRight:
+			return DIRECTIONS.downLeft;
+			break;
+		case DIRECTIONS.downLeft:
+			return DIRECTIONS.upRight;
+			break;
+		case DIRECTIONS.downRight:
+			return DIRECTIONS.upLeft;
+			break;
+		default:
+			return DIRECTIONS.none;
+			break;
+	}
+}
+
+
 /* This indicates whether a delivery object is a pickup or a dropoff location. */
 var LOCATIONS = {
 	pickup: 0,

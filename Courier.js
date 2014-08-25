@@ -39,6 +39,7 @@ var Courier = function(posX, posY) {
 }
 
 Courier.prototype.control = function() {
+	controller.direction = this.direction;
 	if (controller.isAccelerating()) {
 		this.acceleration = this.maxAcceleration;
 	}
@@ -57,13 +58,13 @@ Courier.prototype.control = function() {
 
 	/* If traveling vertically, and trying to turn horizontally */
 	if ((this.direction == DIRECTIONS.up || this.direction == DIRECTIONS.down) &&
-		(controller.isTurningLeft() || controller.isTurningRight())) {
+		(controller.isTurning(DIRECTIONS.left) || controller.isTurning(DIRECTIONS.right))) {
 		/* Only allow to change directions if the speed is less than the max turning speed. */		
 		if (this.speed < this.maxTurnSpeed) {
 			/* Check if near enough a horizontal line to turn. */
 			if (grid.nearGridLine(this.centerY - grid.posY)) {
 				/* Snap to the nearest horizontal line, and change direction. */
-				this.direction = controller.isTurningRight() ? DIRECTIONS.right : DIRECTIONS.left;
+				this.direction = controller.isTurning(DIRECTIONS.right) ? DIRECTIONS.right : DIRECTIONS.left;
 				/* We just turned. Set the correct image for the facing direction. */
 				this.updateImage();
 				var linePosY = grid.snapToGrid(this.centerY - grid.posY) + grid.posY;
@@ -73,13 +74,13 @@ Courier.prototype.control = function() {
 	}
 	/* Otherwise, if traveling horizontally, and trying to turn vertically */
 	else if ((this.direction == DIRECTIONS.left || this.direction == DIRECTIONS.right) &&
-		(controller.isTurningUp() || controller.isTurningDown())) {
+		(controller.isTurning(DIRECTIONS.up) || controller.isTurning(DIRECTIONS.down))) {
 		/* Only allow to change directions if the speed is less than the max turning speed. */		
 		if (this.speed < this.maxTurnSpeed) {
 			/* Check if near enough a vertical line to turn. */
 			if (grid.nearGridLine(this.centerX - grid.posX)) {
 				/* Snap to the nearest vertical line, and change direction. */
-				this.direction = controller.isTurningUp() ? DIRECTIONS.up : DIRECTIONS.down;
+				this.direction = controller.isTurning(DIRECTIONS.up) ? DIRECTIONS.up : DIRECTIONS.down;
 				/* We just turned. Set the correct image for the facing direction. */
 				this.updateImage();
 				var linePosX = grid.snapToGrid(this.centerX - grid.posX) + grid.posX;
