@@ -6,7 +6,7 @@ var currentLoop = LOOPS.menu;
 var currentGameState = STATES.inProgress;
 
 /* How long to wait after a crash to show the game over screen, in seconds. */
-var restartWaitSeconds = 2;
+var restartWaitSeconds = 1;
 /* loops = seconds * (1000ms / second) * (loops / ms) */
 var restartWaitLoops = restartWaitSeconds * 1000 / updateInterval;
 var loopsWaited = 0;

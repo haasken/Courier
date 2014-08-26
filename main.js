@@ -68,8 +68,7 @@ function updateOtherCars() {
 
 function drawBackground(context) {
 	context.fillStyle = COLORS.blue;
-	context.fillRect(0, 0, canvasWidth, canvasHeight);
-	//context.clearRect(0, 0, canvasWidth, canvasHeight);
+	context.clearRect(0, 0, canvasWidth, canvasHeight);
 	IMAGES.background.draw(context, 0, 0, 1);
 	scoreboard.draw(context);
 }
@@ -90,15 +89,29 @@ function initializeGame() {
 	currentGameState = STATES.inProgress;
 }
 
+function printCenteredText(text, posY) {
+	var textWidth = context.measureText(text).width;
+	context.fillText(text, (canvasWidth - textWidth) / 2, posY);
+}
+
 /* Main menu loop */
 function menuLoop() {
 	context.clearRect(0, 0, canvasWidth, canvasHeight);
 	context.fillStyle = COLORS.black;
-	context.font = "40px Courier";
-	context.fillText("Main menu.", 100, 100);
-	context.fillText("Press any key to continue.", 100, 200);
+	context.font = "80px Courier";
+	printCenteredText("Courier", 100);
+	context.font = "30px Courier";
+	context.fillText("Controls: ", 50, 175);
+	printCenteredText("W / Up arrow:    Move up   ", 225);
+	printCenteredText("A / Left arrow:  Move left ", 275);
+	printCenteredText("S / Down arrow:  Move down ", 325);
+	printCenteredText("D / Right arrow: Move right", 375);
 
-	if (keyboard.anyKeyHit()) {
+	printCenteredText("You are the red car. Deliver packages, and", 475);
+	printCenteredText("don't crash! You can't turn at full speed.", 525);
+	printCenteredText("Press S to start.", 600);
+
+	if (keyboard.keyHit(keyboard.KEY.S)) {
 		currentLoop = LOOPS.game;
 		initializeGame();
 	}
@@ -108,16 +121,23 @@ function menuLoop() {
 function gameOverLoop() {
 	context.clearRect(0, 0, canvasWidth, canvasHeight);
 	context.fillStyle = COLORS.black;
-	context.font = "40px Courier";
-	context.fillText("Game Over.", 100, 100);
-	context.fillText("Press any key to continue.", 100, 200);
+	context.font = "60px Courier";
+	printCenteredText("     Game Over     ", 150);
+	printCenteredText("Press R to restart.", 300);
+	printCenteredText(" Press Q for menu. ", 450);
+	scoreboard.draw(context);
 
-	if (keyboard.anyKeyHit()) {
+	if (keyboard.keyHit(keyboard.KEY.Q)) {
+		currentLoop = LOOPS.menu;
+	}
+	if (keyboard.keyHit(keyboard.KEY.R)) {
 		currentLoop = LOOPS.game;
 		initializeGame();
 	}
 	keyboard.updateState();
 }
+
+
 
 /* Main game loop */
 function gameLoop() {
@@ -125,8 +145,8 @@ function gameLoop() {
 	switch(currentGameState) {
 		case STATES.lost:
 			context.fillStyle = COLORS.black;
-			context.font = "40px Courier";
-			context.fillText("You crashed!", 100, 100);
+			context.font = "80px Courier";
+			printCenteredText("CRASHED!", 300);
 
 			loopsWaited++;
 			
