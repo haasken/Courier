@@ -87,6 +87,8 @@ function initializeGame() {
 	}
 
 	currentGameState = STATES.inProgress;
+	totalDropoffs = 0;
+	carAdded = true;
 }
 
 function printCenteredText(text, posY) {
@@ -172,9 +174,13 @@ function gameLoop() {
 				pickupLocations.push(getRandomDeliveryLocation(LOCATIONS.pickup));
 			}
 
-			if (totalDropoffs % addCarInterval == 0 && ! carAdded) {
+			if ((totalDropoffs % addCarInterval) == 0 && ! carAdded) {
 				carAdded = true;
+				console.log("Adding car.");
 				otherCars.push(getRandomCar());
+			}
+			if ((totalDropoffs % addCarInterval) != 0) {
+				carAdded = false;
 			}
 
 			// Drawing

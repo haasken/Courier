@@ -2,3 +2,6 @@
 *.pdn
 # Ignore my asesprite files.  Only track the .pngs
 *.ase
+
+# Ignore my screenshots for my Ludum Dare entry
+*[Ss]creenshot*.png

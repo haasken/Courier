@@ -21,8 +21,8 @@ var Scoreboard = function(posX, posY, width, height) {
 	this.streak = 0;
 
 	/* Constants */
-	this.pointsPerSecondRemaining = 50;
-	this.requiredMultStreak = 4;
+	this.pointsPerSecondRemaining = 100;
+	this.requiredMultStreak = 2;
 	this.maxMultiplier = 8;
 }
 
